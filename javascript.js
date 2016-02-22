@@ -8,6 +8,8 @@ function init()
 	var oChoices =[];
 	var xPossibly = [];
 	var oPossibly = [];
+	var xDrop = 0;
+	var oDrop = 0;
 	var turns = 0;
 	var winningCom = [
 					[1,2,3], 
@@ -19,17 +21,48 @@ function init()
 					[4,5,6],
 					[7,8,9]
 					];
+
 					
 
 	newGame();
 
-	function checkPossiblyFor(player)
+	function runPossibly(player)
 	{
+		var numbers = [];
+		if(player == "x")
+		{
+			xPossibly.forEach(function(com)
+			{
+				com.forEach(function(no)
+				{
+					numbers.push(no);
+				})
+			});
+			numbers.sort();
+			return numbers;
+		}
+		else if(player == "o")
+		{
+			oPossibly.forEach(function(com)
+			{
+				com.forEach(function(no)
+				{
+					numbers.push(no);
+				})
+			})
+			numbers.sort();
+			return numbers;
+		}
+		
+	}
+
+	function checkPossiblyFor(player)
+	{		
 		if(player == "o")
 		{
-			if(xChoices.length > 0)
+			if(oChoices.length > 0)
 			{
-				xChoices.forEach(function(choice)
+				oChoices.forEach(function(choice)
 				{
 					xPossibly.forEach(function(single, j)
 					{
@@ -37,8 +70,7 @@ function init()
 						{
 							if(single[i] == choice)
 							{
-								//remove array;
-								
+								xDrop++
 								delete xPossibly[j];
 								break;
 							}
@@ -46,14 +78,14 @@ function init()
 					})
 				})
 			}
-			var xPercentage = (xPossibly.length/9)*100;
+			var xPercentage = ((8-xDrop)/8)*100;
 			console.log("x :"+xPercentage);
 		}
 		else if(player == "x")
 		{
-			if(oChoices.length > 0)
+			if(xChoices.length > 0)
 			{
-				oChoices.forEach(function(choice)
+				xChoices.forEach(function(choice)
 				{
 					oPossibly.forEach(function(single, j)
 					{
@@ -61,8 +93,7 @@ function init()
 						{
 							if(single[i] == choice)
 							{
-								//remove array;
-								console.log(single[i]+" "+choice);
+								oDrop++
 								delete oPossibly[j];
 								break;
 							}
@@ -70,7 +101,7 @@ function init()
 					})
 				});
 			}
-			var oPercentage = (oPossibly.length/9)*100;
+			var oPercentage = ((8-oDrop)/8)*100;
 			console.log("o :"+oPercentage);
 		}	
 	}
@@ -89,8 +120,28 @@ function init()
 		currentPlayer = "x";
 		xChoices = [];
 		oChoices =[];
-		xPossibly = winningCom;
-		oPossibly = winningCom;
+		xDrop = 0;
+		oDrop = 0;
+		xPossibly = [
+					[1,2,3], 
+					[1,4,7], 
+					[1,5,9],	
+					[2,5,8],	
+					[3,5,7],
+					[3,6,9],
+					[4,5,6],
+					[7,8,9]
+					];
+		oPossibly = [
+					[1,2,3], 
+					[1,4,7], 
+					[1,5,9],	
+					[2,5,8],	
+					[3,5,7],
+					[3,6,9],
+					[4,5,6],
+					[7,8,9]
+					];
 		turns = 0;
 		changeInstruction("x");
 		resetButton();
@@ -128,7 +179,8 @@ function init()
 		if(currentPlayer == "o")
 		{
 			xChoices.push(box);
-			// checkPossiblyFor("x");
+			checkPossiblyFor("x");
+			console.log(runPossibly("x"));
 			if(checkWin(xChoices))
 			{
 				alert("We got a winner! X wins!");
@@ -138,7 +190,8 @@ function init()
 		else if(currentPlayer == "x")
 		{
 			oChoices.push(box);
-			// checkPossiblyFor("o");
+			checkPossiblyFor("o");
+			console.log(runPossibly("o"));
 			if(checkWin(oChoices))
 			{
 				alert("We got a winner! O wins!");
