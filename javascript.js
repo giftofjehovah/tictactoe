@@ -29,28 +29,22 @@ function init()
 	function runPossibly(player)
 	{
 		var numbers = [];
-		if(player == "x")
+		if(player == "o")
 		{
 			xPossibly.forEach(function(com)
 			{
-				com.forEach(function(no)
-				{
-					numbers.push(no);
-				})
+					numbers.push(com);	
 			});
-			numbers.sort();
+			
 			return numbers;
 		}
-		else if(player == "o")
+		else if(player == "x")
 		{
 			oPossibly.forEach(function(com)
-			{
-				com.forEach(function(no)
-				{
-					numbers.push(no);
-				})
+			{		
+					numbers.push(com);
 			})
-			numbers.sort();
+		
 			return numbers;
 		}
 		
